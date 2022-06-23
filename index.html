@@ -4,49 +4,50 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
 <body>
-    
-<div class="key">
-    <div data-key="81" class="key">
+<ul>
+<div>
+    <li><div data-key="81" class="key">
         <kbd>Q</kbd>
-        <span class="sound">boom</span>
+        <span class="sound">boom</span></li>
     </div>
-    <div data-key="87" class="key">
+    <li><div data-key="87" class="key">
         <kbd>W</kbd>
-        <span class="sound">clap</span>
+        <span class="sound">clap</span></li>
     </div>
-    <div data-key="69" class="key">
+    <li><div data-key="69" class="key">
         <kbd>E</kbd>
-        <span class="sound">hihat</span>
+        <span class="sound">hihat</span></li>
     </div>
-    <div data-key="82" class="key">
+    <li><div data-key="82" class="key">
         <kbd>R</kbd>
-        <span class="sound">kick</span>
+        <span class="sound">kick</span></li>
     </div>
-    <div data-key="84" class="key">
+    <li><div data-key="84" class="key">
         <kbd>T</kbd>
-        <span class="sound">openhat</span>
+        <span class="sound">openhat</span></li>
     </div>
-    <div data-key="89" class="key">
+    <li><div data-key="89" class="key">
         <kbd>Y</kbd>
-        <span class="sound">ride</span>
+        <span class="sound">ride</span></li>
     </div>
-    <div data-key="85" class="key">
+    <li><div data-key="85" class="key">
         <kbd>U</kbd>
-        <span class="sound">snare</span>
+        <span class="sound">snare</span></li>
     </div>
-    <div data-key="73" class="key">
+    <li><div data-key="73" class="key">
         <kbd>I</kbd>
-        <span class="sound">tink</span>
+        <span class="sound">tink</span></li>
     </div>    
-    <div data-key="79" class="key">
+    <li><div data-key="79" class="key">
         <kbd>O</kbd>
-        <spam class="sound">tom</spam>
+        <spam class="sound">tom</spam></li>
     </div>
 </div>
-
+</ul> 
 <audio data-key="81" src="sounds/boom.wav"></audio>
 <audio data-key="87" src="sounds/clap.wav"></audio>
 <audio data-key="69" src="sounds/hihat.wav"></audio>
@@ -59,15 +60,24 @@
 
 
 <script>
-    window.addEventListener('keydown', function(e)
-    {
-        const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-        const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
-        if(!audio)return;
-        audio.currentTime = 0;
-        audio.play();
-        console.log(key);
-    });
+    function removeTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    e.target.classList.remove('playing');
+  }
+
+  function playSound(e) {
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+    const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+    if (!audio) return;
+
+    key.classList.add('playing');
+    audio.currentTime = 0;
+    audio.play();
+  }
+
+  const keys = Array.from(document.querySelectorAll('.key'));
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+  window.addEventListener('keydown', playSound);
 </script>
 
 </body>
